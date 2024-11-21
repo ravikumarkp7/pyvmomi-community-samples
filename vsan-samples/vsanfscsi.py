@@ -33,7 +33,7 @@ IP_FQDN_DIC = {"166.168.31.10": "host10.cibgst.com",
                "166.168.31.12": "host12.cibgst.com",
                "166.168.31.13": "host13.cibgst.com"}
 SUBNET_MASK = "255.255.0.0"
-GATEWAY_ADDRESS = "192.168.111.1"
+GATEWAY_ADDRESS = "166.168.31.253"
 DNS_SUFFIXES = ["cibgst.com"]
 DNS_ADDRESS = ["166.168.31.251"]
 
