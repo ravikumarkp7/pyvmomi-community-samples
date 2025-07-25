@@ -53,6 +53,7 @@ def GetArgs():
                        help='Password to use when connecting to host')
    parser.add_argument('--cluster', dest='clusterName', metavar="CLUSTER",
                        default='VSAN-Cluster')
+   parser.add_argument('--ovfUrl', dest='ovfUrl', metavar="ovfUrl")
    args = parser.parse_args()
    return args
 
@@ -147,6 +148,12 @@ def main():
    # connection handshaking rule. We may need turn off the hostname checking
    # and client side cert verification.
    context = None
+   
+   if args.ovfUrl:
+      ovfUrl = args.ovfUrl
+   else:
+      ovfUrl = "https://build-squid.vcfd.broadcom.net/build/mts/release/bora-24781383/publish/vdfs-fsvm/VMware-vSAN-File-Services-Appliance-9.1.0.0.24781383_OVF10.ovf"
+
    if sys.version_info[:3] > (2,7,8):
       context = ssl.create_default_context()
       context.check_hostname = False
@@ -179,9 +186,9 @@ def main():
    vccs = vcMos['vsan-cluster-config-system']
 
    # Find OVF download url
-   print("Finding OVF download url ...")
+   print("OVF download url %s..." (ovfUrl))
    # ovfUrl = vcfs.FindOvfDownloadUrl(cluster)
-   ovfUrl = "https://build-squid.vcfd.broadcom.net/build/mts/release/bora-24781383/publish/vdfs-fsvm/VMware-vSAN-File-Services-Appliance-9.1.0.0.24781383_OVF10.ovf"
+   # ovfUrl = "https://build-squid.vcfd.broadcom.net/build/mts/release/bora-24781383/publish/vdfs-fsvm/VMware-vSAN-File-Services-Appliance-9.1.0.0.24781383_OVF10.ovf"
    if not ovfUrl:
       print("Failed to find the OVF download url.")
       return -1
