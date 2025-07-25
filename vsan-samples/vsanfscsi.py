@@ -186,16 +186,16 @@ def main():
    vccs = vcMos['vsan-cluster-config-system']
 
    # Find OVF download url
-   print("OVF download url %s..." (ovfUrl))
+   print("OVF download url {ovfUrl}...")
    # ovfUrl = vcfs.FindOvfDownloadUrl(cluster)
    # ovfUrl = "https://build-squid.vcfd.broadcom.net/build/mts/release/bora-24781383/publish/vdfs-fsvm/VMware-vSAN-File-Services-Appliance-9.1.0.0.24781383_OVF10.ovf"
    if not ovfUrl:
       print("Failed to find the OVF download url.")
       return -1
-   print("Found OVF download url: %s" % (ovfUrl))
+   print("Found OVF download url: {ovfUrl}" )
 
    # Download FSVM OVF files to vCenter
-   print("Downloading ovf files from %s to vCenter ..." % (ovfUrl))
+   print("Downloading ovf files from {ovfUrl} to vCenter ...")
    vsanTask = vcfs.DownloadFileServiceOvf(downloadUrl=ovfUrl)
    vcTask = vsanapiutils.ConvertVsanTaskToVcTask(vsanTask, si._stub)
    vsanapiutils.WaitForTasks([vcTask], si)
