@@ -192,10 +192,10 @@ def main():
    if not ovfUrl:
       print("Failed to find the OVF download url.")
       return -1
-   print("Found OVF download url: %s" % ovfUrl)
+   print("Found OVF download url: %s" % (ovfUrl))
 
    # Download FSVM OVF files to vCenter
-   print("Downloading ovf files from %s to vCenter ..." % ovfUrl)
+   print("Downloading ovf files from %s to vCenter ..." % (ovfUrl))
    vsanTask = vcfs.DownloadFileServiceOvf(downloadUrl=ovfUrl)
    vcTask = vsanapiutils.ConvertVsanTaskToVcTask(vsanTask, si._stub)
    vsanapiutils.WaitForTasks([vcTask], si)
