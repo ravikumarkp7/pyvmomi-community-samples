@@ -53,6 +53,8 @@ def GetArgs():
    parser.add_argument('--cluster', dest='clusterName', metavar="CLUSTER",
                        default='compute-Cluster')
    parser.add_argument('--ovfUrl', dest='ovfUrl', metavar="ovfUrl")
+   parser.add_argument('--dns-server', dest='dnsServer', required=True,
+                       help='DNS server IP address (required, e.g., public ip of external gateway machine 166.168.31.251)')
    args = parser.parse_args()
    return args
 
@@ -66,7 +68,13 @@ def getClusterInstance(clusterName, serviceInstance):
          return cluster
    return None
 
-def getFileServiceDomainConfig():
+def getFileServiceDomainConfig(dnsServer):
+   """
+   Create file service domain configuration
+   
+   Args:
+       dnsServer: DNS server IP address (required)
+   """
    networkProfiles = []
    for ipAddress, fqdn in IP_FQDN_DIC.items():
       networkProfile = vim.vsan.FileServiceIpConfig(
@@ -77,7 +85,7 @@ def getFileServiceDomainConfig():
 
    fileServiceDomainConfig = vim.vsan.FileServiceDomainConfig(
          name = DOMAIN_NAME,
-         dnsServerAddresses = DNS_ADDRESS,
+         dnsServerAddresses = [dnsServer],
          dnsSuffixes = DNS_SUFFIXES,
          fileServerIpConfig = networkProfiles)
 
@@ -235,7 +243,8 @@ def main():
    print("Enabled file service successfully")
 
    # Create file service domain
-   fsDomainConfig = getFileServiceDomainConfig()
+   print(f"Using DNS server: {args.dnsServer}")
+   fsDomainConfig = getFileServiceDomainConfig(dnsServer=args.dnsServer)
    domainName = fsDomainConfig.name
    print("Creating file service domain")
    vsanTask = vcfs.CreateFileServiceDomain(fsDomainConfig, cluster)
